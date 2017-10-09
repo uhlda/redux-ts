@@ -14,6 +14,14 @@ interface DispatchFromProps {
 interface Props extends StateFromProps, DispatchFromProps {}
 
 export class Counter extends React.Component<Props, object> {
+  // tslint:disable-next-line:no-any
+  constructor(props: any) {
+    super(props);
+    this.state = { 
+      clickCount: 0,
+      label: 'Hit Me'
+     };
+  }
   render() {
     const { label, clickCount, handleClick } = this.props;
     return (
@@ -30,22 +38,20 @@ export class Counter extends React.Component<Props, object> {
 }
 
 export type State = {
-  myData: {
-    clickCount: number,
-    label: string
-  }
+  clickCount: number,
+  label: string
 };
 
-// tslint:disable-next-line:no-any
-const mapStateToProps = (state: State) => ({
-  label: state.myData.label,
-  clickCount: state.myData.clickCount
+const mapStateToProps = (state: State): StateFromProps => ({
+  label: state.label,
+  clickCount: state.clickCount
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchFromProps => ({
   handleClick: () => dispatch(createIncrementAction())
 });
 
+// tslint:disable-next-line:align
 export default connect<StateFromProps, DispatchFromProps, { label: string }>(
   mapStateToProps,
   mapDispatchToProps
