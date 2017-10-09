@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import { Counter } from './components/counter';
+import CounterApp from './components/counter';
 
 const logo = require('./logo.svg');
 
@@ -16,7 +16,7 @@ class App extends React.Component {
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
         <div>
-          <Counter />
+          <CounterApp />
         </div>
       </div>
     );

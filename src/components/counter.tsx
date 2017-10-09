@@ -1,25 +1,29 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch, createIncrementAction } from './actions';
+import { connect, Dispatch, Provider } from 'react-redux';
+import { createIncrementAction } from './actions';
+import { createStore } from 'redux';
+import CounterReduce from './reducers';
 
 interface StateFromProps {
-  label: string;
-  clickCount: number;
+  label?: string;
+  clickCount?: number;
 }
 
 interface DispatchFromProps {
-  handleClick: () => void;
+  handleClick?: () => void;
 }
 
 interface Props extends StateFromProps, DispatchFromProps {}
 
-export class Counter extends React.Component<Props, object> {
+const store = createStore(CounterReduce);
+    
+export class CounterForm extends React.Component<Props, object> {
   // tslint:disable-next-line:no-any
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
     this.state = { 
       clickCount: 0,
-      label: 'Hit Me'
+      label: 'Counter'
      };
   }
   render() {
@@ -47,12 +51,23 @@ const mapStateToProps = (state: State): StateFromProps => ({
   clickCount: state.clickCount
 });
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchFromProps => ({
-  handleClick: () => dispatch(createIncrementAction())
+// tslint:disable:no-any
+const mapDispatchToProps = (dispatch: Dispatch<any>): DispatchFromProps => ({
+  handleClick: () => dispatch<any>(createIncrementAction())
 });
 
 // tslint:disable-next-line:align
-export default connect<StateFromProps, DispatchFromProps, { label: string }>(
+const Counter = connect<StateFromProps, DispatchFromProps>(
   mapStateToProps,
   mapDispatchToProps
-)(Counter);
+)(CounterForm);
+
+export default class CounterApp extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Counter />
+      </Provider>
+    );
+  }
+} 
