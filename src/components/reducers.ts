@@ -1,7 +1,14 @@
+import { State, InitialState } from './counter';
+import { Action } from 'redux';
+
 // tslint:disable-next-line:no-any
-export default function CounterReduce(state: any, action: any) {
-  if (action.type === 'INCREMENT_COUNTER') {
-    return state + 1;
+export default function counterReduce(state: any = InitialState, action: any) {
+  switch (action.type) {
+    case 'INCREMENT_COUNTER':
+      return state.clickCount + 1;
+    case 'DECREMENT_COUNTER':
+      return state.clickCount - 1;
+    default:
+      return state;
   }
-  return state;
 } 
